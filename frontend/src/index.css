@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+:root {
+  --color-brand: #c9a227; /* luxury gold */
+}
+
+:root {
+  --gold-from: #f5c542;
+  --gold-mid: #e0b84c;
+  --gold-to: #b8922e;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --gold-from: #f1bb0a;
+    --gold-mid: #a1882a;
+    --gold-to: #816406;
+  }
+}
+
+#root {
+  font-family: "Inter Tight", sans-serif;
+  font-style: normal;
+  font-optical-sizing: auto;
+}
