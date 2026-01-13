@@ -1,3 +1,4 @@
+import { NavLink, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { HiOutlineShoppingBag } from "react-icons/hi";
 import { HiBars3BottomLeft } from "react-icons/hi2";
@@ -6,7 +7,21 @@ import CartDrawer from "../Layout/CartDrawer";
 import { useState } from "react";
 import { IoMdClose } from "react-icons/io";
 
+const navLinks = [
+  { name: "New Products", path: "/products?new=true" },
+  { name: "Men", path: "/products?gender=men" },
+  { name: "Women", path: "/products?gender=women" },
+  { name: "Shoes", path: "/products?category=shoe" },
+  { name: "Login", path: "/login" },
+];
+
 const NavBar = () => {
+  const location = useLocation();
+
+  const isQueryActive = (path) => {
+    return location.pathname + location.search === path;
+  };
+
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [navDrawerOpen, setNavDrawerOpen] = useState(false);
 
@@ -33,7 +48,9 @@ const NavBar = () => {
           {/* Use gradient text */}
           <Link
             to="/"
-            className="relative font-serif text-3xl tracking-wide 
+            className="relative font-serif 
+text-xl sm:text-2xl md:text-3xl 
+tracking-wide 
              bg-gradient-to-r 
              from-[var(--gold-from)] 
              via-[var(--gold-mid)] 
@@ -74,6 +91,13 @@ const NavBar = () => {
           </button>
         </div>
       </nav>
+      {navDrawerOpen && (
+        <div
+          onClick={toggleNavDrawer}
+          className="fixed inset-0 bg-black/40 z-40"
+        />
+      )}
+
       <CartDrawer drawerOpen={drawerOpen} toggleCartDrawer={toggleCartDrawer} />
       {/* Mobile Navigation */}
       <div
@@ -87,6 +111,37 @@ const NavBar = () => {
           <button onClick={toggleNavDrawer} className="cursor-pointer">
             <IoMdClose className="h-6 w-6 text-gray-600" />
           </button>
+        </div>
+        {/* Navigation Links */}
+        <div className="flex flex-col space-y-6 px-8 mt-10">
+          {navLinks.map((link) => {
+            const active = isQueryActive(link.path);
+
+            return (
+              <NavLink
+                key={link.name}
+                to={link.path}
+                className={`
+    relative font-medium transition
+    text-sm sm:text-base md:text-lg lg:text-xl
+    ${active ? "text-black" : "text-gray-700 hover:text-black"}
+    inline-block
+  `}
+                onClick={toggleNavDrawer}
+              >
+                <span className="relative">
+                  {link.name}
+                  <span
+                    className={`
+        absolute left-0 bottom-0 h-[2px] bg-gradient-to-r from-[var(--gold-from)] to-[var(--gold-to)]
+        transition-all duration-300
+        ${active ? "w-full" : "w-0"}
+      `}
+                  />
+                </span>
+              </NavLink>
+            );
+          })}
         </div>
       </div>
     </>

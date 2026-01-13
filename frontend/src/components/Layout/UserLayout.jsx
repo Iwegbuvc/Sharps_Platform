@@ -1,15 +1,21 @@
-import React from 'react'
-import Header from '../Common/Header'
+import Header from "../Common/Header";
+import { Outlet } from "react-router-dom";
+// import Profile from "../../pages/Profile";
+// import ProductsPage from "../Products/GenderCollectionSelections";
 
 const UserLayout = () => {
   return (
-    <>
-     {/* Header */}
-     <Header/>
-     {/* Logo-Header-Section  */}
-     {/* Main-Section */}
-    </>
-  )
-}
+    <div className="min-h-[100dvh] flex flex-col overflow-hidden bg-gradient-to-br from-gray-50 to-gray-200">
+      {/* Header */}
+      <Header />
+      {/* Logo-Header-Section  */}
+      {/* Main-Section */}
+      <main className="flex-1 overflow-hidden">
+        <Outlet />
+        {/* <Profile /> */}
+      </main>
+    </div>
+  );
+};
 
-export default UserLayout
+export default UserLayout;

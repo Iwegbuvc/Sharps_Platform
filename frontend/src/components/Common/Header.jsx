@@ -3,7 +3,7 @@ import NavBar from "./NavBar";
 
 const Header = () => {
   return (
-    <header className="border-b border-black">
+    <header className="shadow-sm bg-white">
       {/* Top-Bar */}
       <TopBar />
       {/* Nav-Bar */}
