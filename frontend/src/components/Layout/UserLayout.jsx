@@ -1,7 +1,5 @@
 import Header from "../Common/Header";
 import { Outlet } from "react-router-dom";
-// import Profile from "../../pages/Profile";
-// import ProductsPage from "../Products/GenderCollectionSelections";
 
 const UserLayout = () => {
   return (

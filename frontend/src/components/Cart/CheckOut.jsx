@@ -9,7 +9,8 @@ const cart = {
       productId: "1",
       name: "Black Utility Jacket",
       price: 120,
-      image: "/images/p1_product_i1.png",
+      // image: "/images/p1_product_i1.png",
+      image: "https://picsum.photos/150?random=1",
       size: "M",
       color: "Black",
       quantity: 1,
@@ -20,7 +21,7 @@ const cart = {
       productId: "3",
       name: "Oversized Hoodie",
       price: 90,
-      image: "/images/product_3.png",
+      image: "https://picsum.photos/150?random=2",
       size: "L",
       color: "Gray",
       quantity: 2,
@@ -93,7 +94,6 @@ const CheckOut = () => {
                 required
               />
             </div>
-
             <div>
               <label className="block text-gray-700">Last Name</label>
               <input
@@ -193,14 +193,21 @@ const CheckOut = () => {
             {!checkoutId ? (
               <button
                 type="submit"
-                className="w-full cursor-pointer bg-gradient-to-r from-[var(--gold-from)] to-[var(--gold-to)] text-white px-4 py-3 rounded hover:bg-blue-600"
+                className="w-full cursor-pointer bg-gradient-to-r from-[var(--gold-from)] to-[var(--gold-to)] text-white px-4 py-3 rounded hover:bg-blue-600 hover:opacity-90 transition-opacity"
               >
                 Proceed to Payment
               </button>
             ) : (
-              <div>
-                <h3 className="text-lg mb-4">Pay with Paystack</h3>
-                {/* Paystack integration will go here */}
+              <div className="space-y-4">
+                <div className="text-center sm:text-left">
+                  <h3 className="text-base sm:text-lg font-semibold">
+                    Pay with Paystack
+                  </h3>
+                  <p className="text-sm text-gray-500 mt-1">
+                    Secure payment powered by Paystack
+                  </p>
+                </div>
+
                 <PayStackButton
                   amount={cart.totalPrice}
                   email="user@example.com"
@@ -214,6 +221,44 @@ const CheckOut = () => {
             )}
           </div>
         </form>
+      </div>
+      {/* Right Section */}
+      <div className="bg-gray-50 p-6 rounded-lg">
+        <h3 className="text-lg mb-4">Order Summary</h3>
+        <div className="border-t py-4 mb-4">
+          {cart.products.map((product, index) => (
+            <div
+              key={index}
+              className="flex items-start justify-between py-2 border-b"
+            >
+              <div className="flex items-start">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="w-20 h-24 object-cover me-4"
+                />
+                <div>
+                  <h3 className="text-md">{product.name}</h3>
+                  <p className="text-gray-500">Size: {product.size}</p>
+                  <p className="text-gray-500">Color: {product.color}</p>
+                </div>
+              </div>
+              <p className="text-xl">${product.price?.toLocaleString()}</p>
+            </div>
+          ))}
+        </div>
+        <div className="flex justify-between items-center text-lg mb-4">
+          <p>Subtotal</p>
+          <p>${cart.totalPrice?.toLocaleString()}</p>
+        </div>
+        <div className="flex justify-between items-center text-lg">
+          <p>Shipping</p>
+          <p>Free</p>
+        </div>
+        <div className="flex justify-between items-center text-lg mt-4 border-t pt-4">
+          <p>Total</p>
+          <p>${cart.totalPrice?.toLocaleString()}</p>
+        </div>
       </div>
     </div>
   );

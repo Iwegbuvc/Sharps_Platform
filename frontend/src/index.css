@@ -24,3 +24,14 @@
   font-style: normal;
   font-optical-sizing: auto;
 }
+
+/* ===== Paystack Popup Fix (Desktop / Tablet / Mobile) ===== */
+.paystack-checkout-frame {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: 100vw !important;
+  max-height: 100vh !important;
+  z-index: 999999 !important;
+}

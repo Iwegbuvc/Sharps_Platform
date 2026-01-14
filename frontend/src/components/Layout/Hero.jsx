@@ -4,6 +4,7 @@ import Image3 from "../../assets/jeans.jpg";
 import Image4 from "../../assets/suits.jpg";
 import Image5 from "../../assets/tshirts.jpg";
 import Slider from "react-slick";
+import { Link } from "react-router-dom";
 
 const ImageList = [
   {
@@ -71,9 +72,24 @@ const Hero = () => {
                   </p>
 
                   <div>
-                    <button className="bg-gradient-to-r from-[var(--gold-from)] to-[var(--gold-to)] text-white px-6 py-3 rounded-lg font-semibold shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer">
+                    <Link
+                      to="/products"
+                      className="
+    inline-block
+    bg-gradient-to-r from-[var(--gold-from)] to-[var(--gold-to)]
+    text-white
+    px-6 py-3
+    rounded-lg
+    font-semibold
+    shadow-lg
+    hover:scale-105
+    transition-transform
+    duration-300
+    cursor-pointer
+  "
+                    >
                       Shop Now
-                    </button>
+                    </Link>
                   </div>
                 </div>
 
