@@ -159,8 +159,8 @@ const MyOrdersPage = () => {
       <h2 className="text-xl sm:text-2xl font-bold mb-6">My Orders</h2>
 
       {/* Horizontal scroll wrapper */}
-      <div className="overflow-x-auto">
-        <table className="min-w-[750px] w-full text-left text-gray-500">
+      <div className="overflow-x-auto ">
+        <table className="min-w-[750px] w-full text-left text-gray-500 cursor-pointer">
           <thead className="bg-gray-100 text-xs uppercase text-gray-700">
             <tr>
               <th className="px-4 py-3">Image</th>

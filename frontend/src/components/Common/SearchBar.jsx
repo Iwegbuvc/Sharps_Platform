@@ -59,7 +59,7 @@ const SearchBar = () => {
     <div className="relative">
       {/* Search Icon */}
       <button onClick={() => setIsOpen(true)}>
-        <HiMagnifyingGlass className="h-6 w-6" />
+        <HiMagnifyingGlass className="h-6 w-6 cursor-pointer" />
       </button>
 
       {/* Search Panel */}
@@ -109,7 +109,7 @@ const SearchBar = () => {
             <div className="flex items-center justify-end gap-2 mt-2 sm:mt-0 flex-shrink-0">
               <button
                 type="submit"
-                className="bg-black text-white px-3 py-2 rounded-lg"
+                className="bg-black text-white px-3 py-2 rounded-lg cursor-pointer"
               >
                 Search
               </button>
@@ -118,7 +118,7 @@ const SearchBar = () => {
                 onClick={handleClose}
                 className="text-gray-600 hover:text-gray-800"
               >
-                <HiMiniXMark className="h-6 w-6" />
+                <HiMiniXMark className="h-6 w-6 cursor-pointer" />
               </button>
             </div>
           </form>

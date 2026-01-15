@@ -1,6 +1,7 @@
 import { products } from "../../data/products";
 import { useSearchParams } from "react-router-dom";
 import { Link } from "react-router-dom";
+import ScrollToTopButton from "../Common/ScrollToTopButton";
 
 const ProductsPage = () => {
   const [params] = useSearchParams();
@@ -72,6 +73,9 @@ const ProductsPage = () => {
           </Link>
         ))}
       </div>
+
+      {/* 🔝 Scroll to top */}
+      <ScrollToTopButton />
     </div>
   );
 };

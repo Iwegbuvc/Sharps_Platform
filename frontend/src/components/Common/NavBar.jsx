@@ -2,6 +2,8 @@ import { NavLink, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { HiOutlineShoppingBag } from "react-icons/hi";
 import { HiBars3BottomLeft } from "react-icons/hi2";
+import { HiOutlineUser } from "react-icons/hi";
+
 import SearchBar from "./SearchBar";
 import CartDrawer from "../Layout/CartDrawer";
 import { useState } from "react";
@@ -12,6 +14,10 @@ const navLinks = [
   { name: "Men", path: "/products?gender=men" },
   { name: "Women", path: "/products?gender=women" },
   { name: "Shoes", path: "/products?category=shoe" },
+  { name: "Accessories", path: "/products?category=accessories" },
+  { name: "Electronics", path: "/products?category=electronics" },
+  { name: "My Account", path: "/profile" },
+  { name: "My Orders", path: "/my-orders" },
   { name: "Login", path: "/login" },
 ];
 
@@ -46,7 +52,7 @@ const NavBar = () => {
           </Link> */}
 
           {/* Use gradient text */}
-          <Link
+          {/* <Link
             to="/"
             className="relative font-serif 
 text-xl sm:text-2xl md:text-3xl 
@@ -65,6 +71,26 @@ tracking-wide
                to-[var(--gold-to)] 
                rounded-full"
             />
+          </Link> */}
+          <Link
+            to="/"
+            className="relative font-garamond
+    text-xl sm:text-2xl md:text-3xl
+    tracking-wide
+    bg-gradient-to-r
+    from-[var(--gold-from)]
+    via-[var(--gold-mid)]
+    to-[var(--gold-to)]
+    bg-clip-text text-transparent"
+          >
+            SHARPS
+            <span
+              className="absolute -bottom-1 left-0 w-10 h-[3px]
+      bg-gradient-to-r
+      from-[var(--gold-from)]
+      to-[var(--gold-to)]
+      rounded-full"
+            />
           </Link>
 
           {/* SH colored the rest normal */}
@@ -80,6 +106,17 @@ tracking-wide
         <div className=" flex items-center space-x-4">
           {/* Search */}
           <SearchBar />
+          <Link
+            to="/admin"
+            className="block bg-black px-2 rounded text-sm text-white"
+          >
+            Admin
+          </Link>
+          {/* Profile */}
+          <Link to="/profile" className="hidden lg:block cursor-pointer">
+            <HiOutlineUser className="h-7 w-7 text-gray-700 hover:text-black transition" />
+          </Link>
+
           <button onClick={toggleCartDrawer} className="relative">
             <HiOutlineShoppingBag className="h-7 w-7 text-gray-700 cursor-pointer" />
             <span className="absolute -top-1 right-1 bg-gray-400 text-xs rounded-full px-2 py-0.5">
@@ -113,7 +150,7 @@ tracking-wide
           </button>
         </div>
         {/* Navigation Links */}
-        <div className="flex flex-col space-y-6 px-8 mt-10">
+        <div className="flex flex-col space-y-6 px-8 mt-6">
           {navLinks.map((link) => {
             const active = isQueryActive(link.path);
 

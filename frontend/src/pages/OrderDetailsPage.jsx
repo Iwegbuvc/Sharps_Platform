@@ -208,7 +208,7 @@ const OrderDetailsPage = () => {
           This order does not exist or may have been removed.
         </p>
         <Link
-          to="/my-orders"
+          to="/profile"
           className="text-emerald-700 font-medium hover:underline"
         >
           ← Back to My Orders
@@ -272,7 +272,7 @@ const OrderDetailsPage = () => {
       </div>
 
       {/* Products */}
-      <div className="bg-white border rounded-lg p-4 sm:p-6 mb-8">
+      <div className="bg-white border rounded-lg p-4 sm:p-6 mb-8 cursor-pointer">
         <h2 className="text-lg font-semibold mb-4">Products Ordered</h2>
 
         <div className="space-y-4">
