@@ -1,7 +1,11 @@
 import axios from "axios";
 
+const backendBase =
+  import.meta.env.VITE_BACKEND_URL ||
+  "https://sharps-platform-backend.onrender.com";
+
 const API = axios.create({
-  baseURL: "https://sharps-platform-backend.onrender.com/api", // your backend base URL
+  baseURL: `${backendBase}/api`,
 });
 
 // Add JWT token automatically if available
