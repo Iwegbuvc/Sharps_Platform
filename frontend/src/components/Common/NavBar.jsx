@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import { HiOutlineShoppingBag } from "react-icons/hi";
 import { HiBars3BottomLeft } from "react-icons/hi2";
 import { HiOutlineUser } from "react-icons/hi";
-
+import { useCart } from "../../context/cartContext";
+import { useAuth } from "../../context/AuthContext";
 import SearchBar from "./SearchBar";
 import CartDrawer from "../Layout/CartDrawer";
 import { useState } from "react";
@@ -13,15 +14,16 @@ const navLinks = [
   { name: "New Products", path: "/products?new=true" },
   { name: "Men", path: "/products?gender=men" },
   { name: "Women", path: "/products?gender=women" },
-  { name: "Shoes", path: "/products?category=shoe" },
+  { name: "Shoes", path: "/products?category=shoes" },
   { name: "Accessories", path: "/products?category=accessories" },
-  { name: "Electronics", path: "/products?category=electronics" },
+  { name: "Artefact", path: "/products?category=artefact" },
   { name: "My Account", path: "/profile" },
   { name: "My Orders", path: "/my-orders" },
-  { name: "Login", path: "/login" },
 ];
 
 const NavBar = () => {
+  const { cartCount } = useCart();
+  const { user, logout } = useAuth();
   const location = useLocation();
 
   const isQueryActive = (path) => {
@@ -42,36 +44,6 @@ const NavBar = () => {
     <>
       <nav className="container mx-auto flex items-center justify-between py-4 px-5">
         <div>
-          {/* No design just underline with plain color text
-          <Link
-            to="/"
-            className="font-serif text-3xl tracking-wide text-gray-900 relative"
-          >
-            SHARPS
-            <span className="absolute -bottom-1 left-0 w-10 h-[3px] bg-gradient-to-r from-yellow-500 to-yellow-700 rounded-full"></span>
-          </Link> */}
-
-          {/* Use gradient text */}
-          {/* <Link
-            to="/"
-            className="relative font-serif 
-text-xl sm:text-2xl md:text-3xl 
-tracking-wide 
-             bg-gradient-to-r 
-             from-[var(--gold-from)] 
-             via-[var(--gold-mid)] 
-             to-[var(--gold-to)] 
-             bg-clip-text text-transparent"
-          >
-            SHARPS
-            <span
-              className="absolute -bottom-1 left-0 w-10 h-[3px] 
-               bg-gradient-to-r 
-               from-[var(--gold-from)] 
-               to-[var(--gold-to)] 
-               rounded-full"
-            />
-          </Link> */}
           <Link
             to="/"
             className="relative font-garamond
@@ -92,36 +64,48 @@ tracking-wide
       rounded-full"
             />
           </Link>
-
-          {/* SH colored the rest normal */}
-          {/* <Link
-            to="/"
-            className="font-serif text-3xl tracking-wide text-gray-900 relative"
-          >
-            <span className="text-yellow-600">SH</span>ARPS
-            <span className="absolute -bottom-1 left-0 w-8 h-[2px] bg-yellow-600"></span>
-          </Link> */}
         </div>
         {/* Right Icons */}
         <div className=" flex items-center space-x-4">
           {/* Search */}
           <SearchBar />
-          <Link
-            to="/admin"
-            className="block bg-black px-2 rounded text-sm text-white"
-          >
-            Admin
-          </Link>
+          {/* Admin Button - Only visible if user is admin */}
+          {user?.role === "admin" && (
+            <Link
+              to="/admin"
+              className="block bg-black px-2 rounded text-sm text-white hover:bg-gray-800 transition"
+            >
+              Admin
+            </Link>
+          )}
           {/* Profile */}
           <Link to="/profile" className="hidden lg:block cursor-pointer">
             <HiOutlineUser className="h-7 w-7 text-gray-700 hover:text-black transition" />
           </Link>
+          {/* Login/Logout Button */}
+          {user ? (
+            <button
+              onClick={logout}
+              className="bg-red-600 px-3 py-1 rounded text-sm text-white hover:bg-red-700 transition hidden lg:block"
+            >
+              Logout
+            </button>
+          ) : (
+            <Link
+              to="/login"
+              className="bg-gradient-to-r from-[var(--gold-from)] to-[var(--gold-to)] px-3 py-1 rounded text-sm text-white hover:opacity-90 transition hidden lg:block"
+            >
+              Login
+            </Link>
+          )}
 
           <button onClick={toggleCartDrawer} className="relative">
             <HiOutlineShoppingBag className="h-7 w-7 text-gray-700 cursor-pointer" />
-            <span className="absolute -top-1 right-1 bg-gray-400 text-xs rounded-full px-2 py-0.5">
-              4
-            </span>
+            {cartCount > 0 && (
+              <span className="absolute -top-1 right-1 bg-gray-400 text-xs rounded-full px-2 py-0.5">
+                {cartCount}
+              </span>
+            )}
           </button>
           <button onClick={toggleNavDrawer} className="cursor-pointer">
             <HiBars3BottomLeft size={30} />
@@ -179,6 +163,28 @@ tracking-wide
               </NavLink>
             );
           })}
+          {/* Mobile Login/Logout */}
+          <div className="border-t pt-6">
+            {user ? (
+              <button
+                onClick={() => {
+                  logout();
+                  toggleNavDrawer();
+                }}
+                className="w-full bg-red-600 px-3 py-2 rounded text-sm text-white hover:bg-red-700 transition"
+              >
+                Logout
+              </button>
+            ) : (
+              <NavLink
+                to="/login"
+                onClick={toggleNavDrawer}
+                className="block w-full text-center bg-gradient-to-r from-[var(--gold-from)] to-[var(--gold-to)] px-3 py-2 rounded text-sm text-white hover:opacity-90 transition"
+              >
+                Login
+              </NavLink>
+            )}
+          </div>
         </div>
       </div>
     </>

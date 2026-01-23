@@ -1,6 +1,28 @@
-const PayStackButton = ({ amount, email, onSuccess, onClose }) => {
+import API from "../../api/api";
+import { useToast } from "../../context/ToastContext";
+
+const PayStackButton = ({ amount, email, orderId, onSuccess, onClose }) => {
+  const { showToast } = useToast();
+
   const handlePayment = () => {
-    // 🔒 Lock background scroll
+    // Check if PaystackPop is available
+    if (!window.PaystackPop) {
+      showToast("PayStack is not loaded. Please refresh the page.", "error");
+      return;
+    }
+
+    // Validate required fields
+    if (!import.meta.env.VITE_PAYSTACK_PUBLIC_KEY) {
+      showToast("PayStack key is not configured.", "error");
+      return;
+    }
+
+    if (!email || !amount || !orderId) {
+      showToast("Missing payment information.", "error");
+      return;
+    }
+
+    // Lock background scroll
     document.body.style.overflow = "hidden";
 
     const handler = window.PaystackPop.setup({
@@ -9,13 +31,38 @@ const PayStackButton = ({ amount, email, onSuccess, onClose }) => {
       amount: amount * 100,
       currency: "NGN",
       ref: `${Date.now()}`,
-      callback: function (response) {
+      metadata: { orderId },
+
+      callback: (response) => {
         document.body.style.overflow = "";
-        onSuccess(response);
+
+        // Verify payment asynchronously
+        API.post("/checkout/verify", {
+          reference: response.reference,
+          orderId,
+        })
+          .then(() => {
+            if (typeof onSuccess === "function") {
+              onSuccess(response);
+            }
+          })
+          .catch((error) => {
+            console.error("Payment verification failed:", error);
+            showToast(
+              "Payment verification failed. Please contact support.",
+              "error",
+            );
+            if (typeof onClose === "function") {
+              onClose();
+            }
+          });
       },
-      onClose: function () {
+
+      onClose: () => {
         document.body.style.overflow = "";
-        onClose && onClose();
+        if (typeof onClose === "function") {
+          onClose();
+        }
       },
     });
 

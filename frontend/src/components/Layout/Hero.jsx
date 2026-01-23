@@ -1,45 +1,44 @@
-import Image1 from "../../assets/bags.jpg";
-import Image2 from "../../assets/jackets.jpg";
-import Image3 from "../../assets/jeans.jpg";
-import Image4 from "../../assets/suits.jpg";
-import Image5 from "../../assets/tshirts.jpg";
+import { useEffect, useState } from "react";
 import Slider from "react-slick";
 import { Link } from "react-router-dom";
-
-const ImageList = [
-  {
-    id: 1,
-    img: Image1,
-    title: "Up to 50% off on all Men's Wear",
-    description: "Discover premium styles crafted for confidence and comfort.",
-  },
-  {
-    id: 2,
-    img: Image2,
-    title: "30% off on all Women's Wear",
-    description: "Elevate your wardrobe with timeless fashion essentials.",
-  },
-  {
-    id: 3,
-    img: Image3,
-    title: "70% off on all Products Sale",
-    description: "Limited-time deals you don’t want to miss.",
-  },
-  {
-    id: 4,
-    img: Image4,
-    title: "Luxury Suits Collection",
-    description: "Sharp looks tailored for every occasion.",
-  },
-  {
-    id: 5,
-    img: Image5,
-    title: "Everyday Tees, Big Comfort",
-    description: "Simple. Stylish. Essential.",
-  },
-];
+import API from "../../api/api";
+import Loader from "../Common/Loader";
 
 const Hero = () => {
+  const [sliderProducts, setSliderProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchFeaturedProducts = async () => {
+      try {
+        const res = await API.get("/products/getProducts");
+        const products = Array.isArray(res.data.products)
+          ? res.data.products
+          : [];
+
+        // Filter only featured products
+        const featuredProducts = products.filter((product) => product.featured);
+
+        // Map to slider format
+        const sliderData = featuredProducts.map((product) => ({
+          id: product._id,
+          img: product.images?.[0]?.url || "", // Use first image from backend
+          title: product.name,
+          description: product.description,
+        }));
+
+        setSliderProducts(sliderData);
+      } catch (err) {
+        console.error("Failed to fetch featured products:", err);
+        setSliderProducts([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFeaturedProducts();
+  }, []);
+
   const settings = {
     dots: false,
     arrows: false,
@@ -52,18 +51,32 @@ const Hero = () => {
     pauseOnHover: false,
   };
 
+  // Show loading state
+  if (loading) {
+    return <Loader message="Loading featured products..." />;
+  }
+
+  // If no featured products, show message
+  if (sliderProducts.length === 0) {
+    return (
+      <section className="w-full h-full overflow-hidden bg-gradient-to-br from-gray-50 to-gray-200 flex items-center justify-center">
+        <p className="text-gray-500">No featured products available</p>
+      </section>
+    );
+  }
+
   return (
     /* FULL WIDTH + FULL HEIGHT BACKGROUND */
-    <section className="h-full w-full overflow-hidden bg-gradient-to-br from-gray-50 to-gray-200 flex items-center">
+    <section className="w-full h-full overflow-hidden bg-gradient-to-br from-gray-50 to-gray-200 flex items-center">
       {/* CENTERED CONTENT – NO STRETCH */}
-      <div className="w-full max-w-7xl mx-auto px-4">
+      <div className="w-full h-full px-2.5 sm:px-4">
         <Slider {...settings}>
-          {ImageList.map((data) => (
+          {sliderProducts.map((data) => (
             <div key={data.id}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 items-center min-h-[83vh]">
+              <div className="grid grid-cols-1 sm:grid-cols-2 items-center h-full gap-4 sm:gap-8 pt-8">
                 {/* TEXT */}
-                <div className="flex flex-col gap-5 text-center sm:text-left order-2 sm:order-1 px-4">
-                  <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight text-gray-900">
+                <div className="flex flex-col gap-5 text-center sm:text-left order-2 sm:order-1 sm:pl-8 md:pl-12">
+                  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-gray-900">
                     {data.title}
                   </h1>
 
@@ -94,14 +107,14 @@ const Hero = () => {
                 </div>
 
                 {/* IMAGE */}
-                <div className="flex justify-center order-1 sm:order-2">
+                <div className="flex justify-center order-1 sm:order-2 items-start sm:items-center">
                   <img
                     src={data.img}
                     alt={data.title}
                     className="
-                      mx-auto
-                      w-[260px] h-[260px]
-                      sm:w-[420px] sm:h-[420px]
+                      w-full h-auto
+                      sm:w-80 sm:h-80
+                      md:w-96 md:h-96
                       object-cover
                       rounded-xl
                       drop-shadow-xl
