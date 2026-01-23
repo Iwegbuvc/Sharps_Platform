@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { HiMagnifyingGlass, HiMiniXMark } from "react-icons/hi2";
+import { products as allProducts } from "../../data/products";
 
 const STORAGE_KEY = "recent_searches";
 
@@ -7,8 +9,9 @@ const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [recent, setRecent] = useState([]);
-
+  const [filtered, setFiltered] = useState([]);
   const panelRef = useRef(null);
+  const navigate = useNavigate();
 
   // Load recent searches from localStorage
   useEffect(() => {
@@ -38,6 +41,7 @@ const SearchBar = () => {
   const handleClose = () => {
     setIsOpen(false);
     setSearchTerm("");
+    setFiltered([]);
   };
 
   const handleSubmit = (e) => {
@@ -51,9 +55,22 @@ const SearchBar = () => {
     setRecent(updated);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
 
-    console.log("Searching for:", searchTerm);
+    // Navigate to search results page with query param
+    navigate(`/search?q=${encodeURIComponent(searchTerm)}`);
     handleClose();
   };
+
+  useEffect(() => {
+    if (searchTerm.trim()) {
+      setFiltered(
+        allProducts.filter((p) =>
+          p.name.toLowerCase().includes(searchTerm.toLowerCase()),
+        ),
+      );
+    } else {
+      setFiltered([]);
+    }
+  }, [searchTerm]);
 
   return (
     <div className="relative">
@@ -122,6 +139,36 @@ const SearchBar = () => {
               </button>
             </div>
           </form>
+
+          {/* Local Filtered Results */}
+          {filtered.length > 0 && (
+            <div className="mt-3 bg-white rounded-xl shadow p-3 sm:p-4">
+              <p className="text-sm text-gray-500 mb-2">Quick results</p>
+              <ul className="space-y-2">
+                {filtered.slice(0, 5).map((item) => (
+                  <li
+                    key={item._id}
+                    className="cursor-pointer rounded-lg px-3 py-2 bg-gray-100 hover:bg-gray-200 text-sm flex justify-between items-center"
+                    onClick={() => navigate(`/products/${item._id}`)}
+                  >
+                    <span>{item.name}</span>
+                    <span className="text-xs text-gray-400">₦{item.price}</span>
+                  </li>
+                ))}
+              </ul>
+              {filtered.length > 5 && (
+                <button
+                  className="mt-2 w-full text-center text-blue-600 hover:underline text-sm"
+                  onClick={() => {
+                    navigate(`/search?q=${encodeURIComponent(searchTerm)}`);
+                    handleClose();
+                  }}
+                >
+                  See all results
+                </button>
+              )}
+            </div>
+          )}
 
           {/* Recent Searches */}
           {recent.length > 0 && (

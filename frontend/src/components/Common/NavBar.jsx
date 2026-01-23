@@ -82,22 +82,7 @@ const NavBar = () => {
           <Link to="/profile" className="hidden lg:block cursor-pointer">
             <HiOutlineUser className="h-7 w-7 text-gray-700 hover:text-black transition" />
           </Link>
-          {/* Login/Logout Button */}
-          {user ? (
-            <button
-              onClick={logout}
-              className="bg-red-600 px-3 py-1 rounded text-sm text-white hover:bg-red-700 transition hidden lg:block"
-            >
-              Logout
-            </button>
-          ) : (
-            <Link
-              to="/login"
-              className="bg-gradient-to-r from-[var(--gold-from)] to-[var(--gold-to)] px-3 py-1 rounded text-sm text-white hover:opacity-90 transition hidden lg:block"
-            >
-              Login
-            </Link>
-          )}
+          {/* Login/Logout Button removed from visible navbar, now only in menu bar */}
 
           <button onClick={toggleCartDrawer} className="relative">
             <HiOutlineShoppingBag className="h-7 w-7 text-gray-700 cursor-pointer" />

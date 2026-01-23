@@ -91,6 +91,9 @@ const ProductsPage = () => {
   const [loading, setLoading] = useState(true);
   const [params] = useSearchParams();
 
+  // Get search query param
+  const searchQuery = params.get("q")?.toLowerCase() || "";
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -104,9 +107,13 @@ const ProductsPage = () => {
         setLoading(false);
       }
     };
-
     fetchProducts();
   }, [params]);
+
+  // Filter products by search query if present
+  const filteredProducts = searchQuery
+    ? products.filter((p) => p.name.toLowerCase().includes(searchQuery))
+    : products;
 
   if (loading) {
     return (
@@ -130,7 +137,7 @@ const ProductsPage = () => {
           mx-auto
         "
       >
-        {products.map((p) => (
+        {filteredProducts.map((p) => (
           <Link
             key={p._id}
             to={`/products/${p._id}`}
@@ -139,7 +146,7 @@ const ProductsPage = () => {
             {/* Image */}
             <div className="overflow-hidden rounded-lg">
               <img
-                src={p.images?.[0]?.url}
+                src={p.images?.[0]?.url || p.image}
                 alt={p.name}
                 className="
                   w-full

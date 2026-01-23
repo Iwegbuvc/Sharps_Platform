@@ -6,6 +6,7 @@ import { ToastProvider } from "./context/ToastContext";
 import UserLayout from "./components/Layout/UserLayout";
 import Home from "./pages/Home";
 import ProductsPage from "./components/Products/GenderCollectionSelections";
+import SearchResultsPage from "./pages/SearchResultsPage";
 import ProductDetails from "./components/Products/ProductDetails";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -35,6 +36,7 @@ const App = () => {
                 <Route index element={<Home />} />
                 <Route path="products" element={<ProductsPage />} />
                 <Route path="products/:id" element={<ProductDetails />} />
+                <Route path="search" element={<SearchResultsPage />} />
                 <Route path="login" element={<Login />} />
                 <Route path="register" element={<Register />} />
                 <Route path="profile" element={<Profile />} />
