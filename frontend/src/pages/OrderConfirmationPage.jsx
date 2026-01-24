@@ -243,7 +243,11 @@ const OrderConfirmationPage = () => {
           <div>
             <h4 className="text-base sm:text-lg font-semibold mb-1">Payment</h4>
             <p className="text-sm text-gray-600">
-              {checkout.isPaid ? "Paid via PayStack" : "Pending Payment"}
+              {checkout.paymentStatus === "paid"
+                ? `Paid via ${checkout.paymentMethod}`
+                : checkout.paymentMethod === "Pay on Delivery"
+                  ? "Not Paid (Pay on Delivery)"
+                  : "Pending Payment"}
             </p>
           </div>
 

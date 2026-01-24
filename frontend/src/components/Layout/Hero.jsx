@@ -73,9 +73,9 @@ const Hero = () => {
         <Slider {...settings}>
           {sliderProducts.map((data) => (
             <div key={data.id}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 items-center h-full gap-4 sm:gap-8 pt-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 items-center h-full gap-2 sm:gap-4 pt-8">
                 {/* TEXT */}
-                <div className="flex flex-col gap-5 text-center sm:text-left order-2 sm:order-1 sm:pl-8 md:pl-12">
+                <div className="flex flex-col gap-4 text-center sm:text-left order-2 sm:order-1 sm:pl-4 md:pl-6 sm:ml-6 md:ml-12">
                   <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-gray-900">
                     {data.title}
                   </h1>
@@ -107,12 +107,12 @@ const Hero = () => {
                 </div>
 
                 {/* IMAGE */}
-                <div className="flex justify-center order-1 sm:order-2 items-start sm:items-center">
+                <div className="flex justify-center order-1 sm:order-2 items-center">
                   <img
                     src={data.img}
                     alt={data.title}
                     className="
-                      w-full h-auto
+                      w-64 h-64
                       sm:w-80 sm:h-80
                       md:w-96 md:h-96
                       object-cover
@@ -120,7 +120,14 @@ const Hero = () => {
                       drop-shadow-xl
                       transition-transform duration-500
                       hover:scale-105
+                      bg-gray-100
                     "
+                    style={{
+                      minWidth: "16rem",
+                      minHeight: "16rem",
+                      maxWidth: "24rem",
+                      maxHeight: "24rem",
+                    }}
                   />
                 </div>
               </div>

@@ -256,6 +256,7 @@ const AdminOrders = () => {
                 Email
               </th>
               <th className="px-4 py-3 text-left text-sm">Total</th>
+              <th className="px-4 py-3 text-left text-sm">Payment</th>
               <th className="px-4 py-3 text-left text-sm">Status</th>
               <th className="px-4 py-3 text-left text-sm">Actions</th>
             </tr>
@@ -263,15 +264,27 @@ const AdminOrders = () => {
           <tbody className="divide-y">
             {orders.map((o) => (
               <tr key={o._id}>
-                <td className="px-4 py-4 text-sm truncate">
-                  {o._id?.slice(-8)}
-                </td>
+                <td className="px-4 py-4 text-sm break-all">{o._id}</td>
                 <td className="px-4 py-4 text-sm">{o.user?.name || "N/A"}</td>
                 <td className="px-4 py-4 text-sm hidden lg:table-cell truncate">
                   {o.user?.email || "N/A"}
                 </td>
                 <td className="px-4 py-4 text-sm font-medium">
                   ₦{o.totalAmount?.toLocaleString()}
+                </td>
+                <td className="px-4 py-4 text-sm">
+                  <span className="block text-xs font-medium">
+                    {o.paymentMethod || "Paystack"}
+                  </span>
+                  <span
+                    className={`block text-xs mt-1 font-semibold ${o.paymentStatus === "paid" ? "text-green-700" : "text-red-600"}`}
+                  >
+                    {o.paymentStatus === "paid"
+                      ? "Paid"
+                      : o.paymentMethod === "Pay on Delivery"
+                        ? "Not Paid"
+                        : "Pending"}
+                  </span>
                 </td>
                 <td className="px-4 py-4">
                   <span
@@ -326,6 +339,18 @@ const AdminOrders = () => {
                 <p className="text-xs text-gray-600">
                   {o.user?.email || "N/A"}
                 </p>
+                <p className="text-xs mt-1 font-medium">
+                  {o.paymentMethod || "Paystack"}
+                </p>
+                <span
+                  className={`block text-xs mt-1 font-semibold ${o.paymentStatus === "paid" ? "text-green-700" : "text-red-600"}`}
+                >
+                  {o.paymentStatus === "paid"
+                    ? "Paid"
+                    : o.paymentMethod === "Pay on Delivery"
+                      ? "Not Paid"
+                      : "Pending"}
+                </span>
               </div>
               <span
                 className={`px-2 py-1 text-xs rounded-full font-medium capitalize whitespace-nowrap ${

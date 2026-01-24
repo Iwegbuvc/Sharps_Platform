@@ -439,33 +439,45 @@ const CheckOut = () => {
 
           {/* PAYMENT */}
           {!checkoutId ? (
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-gradient-to-r from-[var(--gold-from)] to-[var(--gold-to)] text-white px-4 py-3 rounded hover:opacity-90"
-            >
-              {loading ? "Processing..." : "Proceed to Payment"}
-            </button>
+            <>
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-gradient-to-r from-[var(--gold-from)] to-[var(--gold-to)] text-white px-4 py-3 rounded hover:opacity-90 mb-3"
+              >
+                {loading ? "Processing..." : "Proceed to Payment"}
+              </button>
+              <button
+                type="button"
+                disabled={loading}
+                className="w-full border border-[var(--gold-from)] text-[var(--gold-from)] px-4 py-3 rounded hover:bg-gray-100 transition mb-1"
+                onClick={async () => {
+                  if (checkoutInProgress.current || loading) return;
+                  checkoutInProgress.current = true;
+                  setLoading(true);
+                  try {
+                    // Create order with paymentMethod: 'Pay on Delivery'
+                    const res = await API.post("/checkout", {
+                      shippingAddress,
+                      paymentMethod: "Pay on Delivery",
+                    });
+                    setCheckoutId(res.data.orderId);
+                    setPayAmount(res.data.amount);
+                    // Immediately clear cart and go to confirmation
+                    clearCart();
+                    navigate(`/order-confirmation/${res.data.orderId}`);
+                  } catch (err) {
+                    console.error(err);
+                    checkoutInProgress.current = false;
+                  } finally {
+                    setLoading(false);
+                  }
+                }}
+              >
+                Place Order Without Payment (Pay on Delivery)
+              </button>
+            </>
           ) : (
-            // <PayStackButton
-            //   amount={payAmount}
-            //   email="user@example.com"
-            //   orderId={checkoutId}
-            //   onSuccess={async (reference) => {
-            //     // 1️⃣ Verify payment with backend
-            //     await API.post("/checkout/verify", {
-            //       reference: reference.reference,
-            //       orderId: checkoutId,
-            //     });
-
-            //     // 2️⃣ Clear cart state in frontend
-            //     clearCart();
-
-            //     // 3️⃣ Navigate to confirmation page
-            //     navigate("/order-confirmation");
-            //   }}
-            //   onClose={() => console.log("Payment closed")}
-            // />
             <PayStackButton
               amount={payAmount}
               email={user?.email || "user@example.com"}

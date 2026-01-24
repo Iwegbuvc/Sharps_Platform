@@ -78,7 +78,7 @@ const AdminSidebar = ({ onClose }) => {
         </NavLink>
 
         <NavLink
-          to="/admin/shop"
+          to="/products"
           onClick={onClose}
           className={({ isActive }) =>
             `${baseLink} ${isActive ? activeLink : inactiveLink}`
