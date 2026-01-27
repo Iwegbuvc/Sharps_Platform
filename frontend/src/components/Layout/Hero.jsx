@@ -112,7 +112,7 @@ const Hero = () => {
                     src={data.img}
                     alt={data.title}
                     className="
-    w-[80vw] h-[100vw]      /* 80% of viewport width for width and height on mobile */
+    w-[100vw] h-[100vw]      /* 80% of viewport width for width and height on mobile */
     sm:w-80 sm:h-80         /* tablet */
     md:w-96 md:h-96         /* desktop */
     object-cover
