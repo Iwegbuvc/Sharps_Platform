@@ -1,0 +1,8 @@
+{
+  "name": "Sharps_Platform",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ]
+}

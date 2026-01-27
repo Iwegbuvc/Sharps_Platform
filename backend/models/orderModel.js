@@ -10,6 +10,8 @@ const orderItemSchema = new mongoose.Schema({
   price: Number,
   quantity: Number,
   size: String,
+  image: String,
+  color: String,
 });
 
 const orderSchema = new mongoose.Schema(
@@ -40,6 +42,17 @@ const orderSchema = new mongoose.Schema(
       default: "pending",
     },
 
+    paymentMethod: {
+      type: String,
+      enum: ["Paystack", "Pay on Delivery"],
+      default: "Paystack",
+    },
+
+    orderStatus: {
+      type: String,
+      enum: ["processing", "shipped", "delivered", "cancelled"],
+      default: "processing",
+    },
     paymentReference: String,
 
     paidAt: Date,
