@@ -112,19 +112,17 @@ const Hero = () => {
                     src={data.img}
                     alt={data.title}
                     className="
-                      w-64 h-64
-                      sm:w-80 sm:h-80
-                      md:w-96 md:h-96
-                      object-cover
-                      rounded-xl
-                      drop-shadow-xl
-                      transition-transform duration-500
-                      hover:scale-105
-                      bg-gray-100
-                    "
+      w-[100%] h-80      /* 80% width on small screens, height auto */
+      sm:w-80 sm:h-80     /* tablet */
+      md:w-96 md:h-96     /* desktop */
+      object-cover
+      rounded-xl
+      drop-shadow-xl
+      transition-transform duration-500
+      hover:scale-105
+      bg-gray-100
+    "
                     style={{
-                      minWidth: "16rem",
-                      minHeight: "16rem",
                       maxWidth: "24rem",
                       maxHeight: "24rem",
                     }}
