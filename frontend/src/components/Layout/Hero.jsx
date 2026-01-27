@@ -112,20 +112,16 @@ const Hero = () => {
                     src={data.img}
                     alt={data.title}
                     className="
-      w-[100%] h-80      /* 80% width on small screens, height auto */
-      sm:w-80 sm:h-80     /* tablet */
-      md:w-96 md:h-96     /* desktop */
-      object-cover
-      rounded-xl
-      drop-shadow-xl
-      transition-transform duration-500
-      hover:scale-105
-      bg-gray-100
-    "
-                    style={{
-                      maxWidth: "24rem",
-                      maxHeight: "24rem",
-                    }}
+    w-[80vw] h-[100vw]      /* 80% of viewport width for width and height on mobile */
+    sm:w-80 sm:h-80         /* tablet */
+    md:w-96 md:h-96         /* desktop */
+    object-cover
+    rounded-xl
+    drop-shadow-xl
+    transition-transform duration-500
+    hover:scale-105
+    bg-gray-100
+  "
                   />
                 </div>
               </div>
