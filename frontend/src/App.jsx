@@ -15,6 +15,8 @@ import CheckOut from "./components/Cart/CheckOut";
 import OrderConfirmationPage from "./pages/OrderConfirmationPage";
 import OrderDetailsPage from "./pages/OrderDetailsPage";
 import MyOrdersPage from "./pages/MyOrdersPage";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 import AdminLayout from "./components/Admin/AdminLayout";
 import AdminHomePage from "./pages/AdminHomePage";
@@ -41,6 +43,8 @@ const App = () => {
                 <Route path="register" element={<Register />} />
                 <Route path="profile" element={<Profile />} />
                 <Route path="checkout" element={<CheckOut />} />
+                <Route path="forgot-password" element={<ForgotPassword />} />
+                <Route path="reset-password" element={<ResetPassword />} />
                 <Route
                   path="order-confirmation/:orderId"
                   element={<OrderConfirmationPage />}

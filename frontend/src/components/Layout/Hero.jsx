@@ -112,9 +112,9 @@ const Hero = () => {
                     src={data.img}
                     alt={data.title}
                     className="
-    w-[100vw] h-[100vw]      /* 80% of viewport width for width and height on mobile */
-    sm:w-80 sm:h-80         /* tablet */
-    md:w-96 md:h-96         /* desktop */
+    w-[100vw] h-[100vw]      
+    sm:w-80 sm:h-80       
+    md:w-96 md:h-96        
     object-cover
     rounded-xl
     drop-shadow-xl
