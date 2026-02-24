@@ -44,6 +44,7 @@
 
 // export default useCart;
 import { useEffect, useState, useCallback } from "react";
+import { toast } from "sonner";
 import API from "../api/api";
 
 const useCart = () => {
@@ -63,8 +64,25 @@ const useCart = () => {
   }, []);
 
   const addToCart = async (data) => {
-    const res = await API.post("/cart/add", data);
-    setCart(res.data);
+    console.log("addToCart called", data);
+    // Check for token before API call
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.log("No token found, showing toast");
+      toast.error("You must be logged in to add items to your cart.");
+      return false;
+    }
+    try {
+      console.log("Token found, calling API");
+      const res = await API.post("/cart/add", data);
+      setCart(res.data);
+      return true;
+    } catch (err) {
+      // Show backend error message if available
+      const message = err?.response?.data?.message || "Add to cart failed";
+      toast.error(message);
+      return false;
+    }
   };
 
   const updateItem = async (itemId, quantity) => {

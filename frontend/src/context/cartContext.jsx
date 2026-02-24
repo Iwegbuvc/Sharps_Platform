@@ -55,6 +55,7 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import API from "../api/api";
+import { toast } from "sonner";
 
 const CartContext = createContext();
 
@@ -83,16 +84,42 @@ export const CartProvider = ({ children }) => {
   useEffect(() => {
     fetchCart();
   }, [token]);
-  const addToCart = async ({ productId, quantity, size, color }) => {
+  // Add selectedImage to cart item
+  const addToCart = async ({
+    productId,
+    quantity,
+    size,
+    color,
+    selectedImage,
+  }) => {
+    // Early check for token before API call
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("You must be logged in to add items to your cart.");
+      return;
+    }
     try {
       const res = await API.post("/cart/add", {
         productId,
         quantity,
         size,
         color,
+        selectedImage, // Pass selectedImage to backend
       });
       setCart(res.data);
     } catch (err) {
+      // Show backend error message as toast if available
+      let message = err?.response?.data?.message || "Add to cart failed";
+      if (err?.response?.status === 401) {
+        message = "You must be logged in to add items to your cart.";
+      }
+      if (typeof toast !== 'undefined') {
+        toast.error(message);
+      } else if (typeof window !== 'undefined' && window.toast) {
+        window.toast.error(message);
+      } else {
+        console.error(message);
+      }
       console.error("Add to cart failed", err);
     }
   };
@@ -119,9 +146,13 @@ export const CartProvider = ({ children }) => {
   const cartCount =
     cart?.items?.reduce((sum, item) => sum + item.quantity, 0) || 0;
 
+  // Add clearCart to context value
+  const clearCart = () => {
+    setCart({ items: [], totalPrice: 0 });
+  };
+
   return (
     <CartContext.Provider
-      // --- ADD THEM TO THE VALUE PROP SO COMPONENTS CAN USE THEM ---
       value={{
         cart,
         cartCount,
@@ -130,6 +161,7 @@ export const CartProvider = ({ children }) => {
         removeItem,
         fetchCart,
         loading,
+        clearCart, // <-- now available everywhere
       }}
     >
       {children}

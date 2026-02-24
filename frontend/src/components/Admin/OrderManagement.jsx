@@ -1,3 +1,4 @@
+import React from "react";
 // import { useState } from "react";
 
 // const STATUS_COLORS = {
@@ -263,64 +264,96 @@ const AdminOrders = () => {
           </thead>
           <tbody className="divide-y">
             {orders.map((o) => (
-              <tr key={o._id}>
-                <td className="px-4 py-4 text-sm break-all">{o._id}</td>
-                <td className="px-4 py-4 text-sm">{o.user?.name || "N/A"}</td>
-                <td className="px-4 py-4 text-sm hidden lg:table-cell truncate">
-                  {o.user?.email || "N/A"}
-                </td>
-                <td className="px-4 py-4 text-sm font-medium">
-                  ₦{o.totalAmount?.toLocaleString()}
-                </td>
-                <td className="px-4 py-4 text-sm">
-                  <span className="block text-xs font-medium">
-                    {o.paymentMethod || "Paystack"}
-                  </span>
-                  <span
-                    className={`block text-xs mt-1 font-semibold ${o.paymentStatus === "paid" ? "text-green-700" : "text-red-600"}`}
-                  >
-                    {o.paymentStatus === "paid"
-                      ? "Paid"
-                      : o.paymentMethod === "Pay on Delivery"
-                        ? "Not Paid"
-                        : "Pending"}
-                  </span>
-                </td>
-                <td className="px-4 py-4">
-                  <span
-                    className={`px-2 py-1 text-xs rounded-full font-medium capitalize inline-block ${
-                      STATUS_COLORS[o.orderStatus]
-                    }`}
-                  >
-                    {o.orderStatus}
-                  </span>
-                </td>
-                <td className="px-4 py-4">
-                  <div className="flex flex-wrap gap-1">
-                    {ORDER_STATUSES.map((s) => (
-                      <button
-                        key={s}
-                        disabled={
-                          o.orderStatus === s ||
-                          !canUpdateStatus(o.orderStatus, s)
-                        }
-                        onClick={() => updateOrderStatus(o._id, s)}
-                        className={`px-2 py-1 text-xs rounded border transition ${
-                          o.orderStatus === s
-                            ? "bg-black text-white cursor-default"
-                            : "hover:bg-gray-100"
-                        } ${
-                          !canUpdateStatus(o.orderStatus, s)
-                            ? "opacity-40 cursor-not-allowed"
-                            : ""
-                        }`}
-                      >
-                        {s}
-                      </button>
-                    ))}
-                  </div>
-                </td>
-              </tr>
+              <React.Fragment key={o._id}>
+                <tr>
+                  <td className="px-4 py-4 text-sm break-all">{o._id}</td>
+                  <td className="px-4 py-4 text-sm">{o.user?.name || "N/A"}</td>
+                  <td className="px-4 py-4 text-sm hidden lg:table-cell truncate">
+                    {o.user?.email || "N/A"}
+                  </td>
+                  <td className="px-4 py-4 text-sm font-medium">
+                    ₦{o.totalAmount?.toLocaleString()}
+                  </td>
+                  <td className="px-4 py-4 text-sm">
+                    <span className="block text-xs font-medium">
+                      {o.paymentMethod || "Paystack"}
+                    </span>
+                    <span
+                      className={`block text-xs mt-1 font-semibold ${o.paymentStatus === "paid" ? "text-green-700" : "text-red-600"}`}
+                    >
+                      {o.paymentStatus === "paid"
+                        ? "Paid"
+                        : o.paymentMethod === "Pay on Delivery"
+                          ? "Not Paid"
+                          : "Pending"}
+                    </span>
+                  </td>
+                  <td className="px-4 py-4">
+                    <span
+                      className={`px-2 py-1 text-xs rounded-full font-medium capitalize inline-block ${
+                        STATUS_COLORS[o.orderStatus]
+                      }`}
+                    >
+                      {o.orderStatus}
+                    </span>
+                  </td>
+                  <td className="px-4 py-4">
+                    <div className="flex flex-wrap gap-1">
+                      {ORDER_STATUSES.map((s) => (
+                        <button
+                          key={s}
+                          disabled={
+                            o.orderStatus === s ||
+                            !canUpdateStatus(o.orderStatus, s)
+                          }
+                          onClick={() => updateOrderStatus(o._id, s)}
+                          className={`px-2 py-1 text-xs rounded border transition ${
+                            o.orderStatus === s
+                              ? "bg-black text-white cursor-default"
+                              : "hover:bg-gray-100"
+                          } ${
+                            !canUpdateStatus(o.orderStatus, s)
+                              ? "opacity-40 cursor-not-allowed"
+                              : ""
+                          }`}
+                        >
+                          {s}
+                        </button>
+                      ))}
+                    </div>
+                  </td>
+                </tr>
+                {/* Responsive product details row */}
+                <tr>
+                  <td colSpan={7} className="bg-gray-50 px-4 py-2">
+                    <div className="flex flex-wrap gap-4">
+                      {(o.items || o.cartItems || []).map((item) => (
+                        <div
+                          key={item._id}
+                          className="flex items-center gap-2 border p-2 rounded w-full sm:w-auto"
+                        >
+                          <img
+                            src={
+                              item.selectedImage ||
+                              item.image ||
+                              item.product.images[0]?.url
+                            }
+                            alt={item.product.name}
+                            className="w-14 h-14 object-cover rounded"
+                          />
+                          <div>
+                            <div className="font-semibold text-xs md:text-sm">
+                              {item.product.name}
+                            </div>
+                            <div className="text-xs">Size: {item.size}</div>
+                            <div className="text-xs">Qty: {item.quantity}</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </td>
+                </tr>
+              </React.Fragment>
             ))}
           </tbody>
         </table>
@@ -363,6 +396,32 @@ const AdminOrders = () => {
             <p className="text-sm font-semibold">
               ₦{o.totalAmount?.toLocaleString()}
             </p>
+            {/* Responsive product details for mobile */}
+            <div className="flex flex-wrap gap-2 mt-2">
+              {(o.items || o.cartItems || []).map((item) => (
+                <div
+                  key={item._id}
+                  className="flex items-center gap-2 border p-1 rounded w-full sm:w-auto"
+                >
+                  <img
+                    src={
+                      item.selectedImage ||
+                      item.image ||
+                      item.product.images[0]?.url
+                    }
+                    alt={item.product.name}
+                    className="w-12 h-12 object-cover rounded"
+                  />
+                  <div>
+                    <div className="font-semibold text-xs">
+                      {item.product.name}
+                    </div>
+                    <div className="text-xs">Size: {item.size}</div>
+                    <div className="text-xs">Qty: {item.quantity}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
             <div className="flex flex-wrap gap-1 pt-2">
               {ORDER_STATUSES.map((s) => (
                 <button

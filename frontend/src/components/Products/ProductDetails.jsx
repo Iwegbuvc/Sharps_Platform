@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import API from "../../api/api";
+import { useCart } from "../../context/cartContext";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -14,6 +15,7 @@ const ProductDetails = () => {
   const [activeImage, setActiveImage] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [size, setSize] = useState(null);
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -44,15 +46,17 @@ const ProductDetails = () => {
 
     try {
       setIsAdding(true);
-      await API.post("/cart/add", {
+      const success = await addToCart({
         productId: product._id,
         quantity,
         size: hasSizes ? size : undefined,
+        selectedImage: activeImage,
       });
-      toast.success("Added to cart");
+      if (success) {
+        toast.success("Added to cart");
+      }
     } catch (err) {
-      toast.error("Please login to add items to cart");
-      navigate("/login");
+      // Error toast is handled in cartContext, do not show here
     } finally {
       setIsAdding(false);
     }

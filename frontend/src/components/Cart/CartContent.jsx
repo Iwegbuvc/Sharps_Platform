@@ -75,7 +75,7 @@
 //           className="flex items-start justify-between py-4 border-b mb-4"
 //         >
 //           <img
-//             src={item.product.images[0]?.url}
+//             src={item.selectedImage || item.image || item.product.images[0]?.url}
 //             alt={item.product.name}
 //             className="w-26 h-26 object-cover rounded-md"
 //           />
@@ -141,6 +141,8 @@ const CartContent = () => {
           {/* SAFE IMAGE ACCESS */}
           <img
             src={
+              item.selectedImage ||
+              item.image ||
               item.product?.images?.[0]?.url ||
               "https://via.placeholder.com/150"
             }

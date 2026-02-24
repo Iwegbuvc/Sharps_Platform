@@ -214,7 +214,7 @@ const OrderConfirmationPage = () => {
               className="flex flex-col sm:flex-row sm:items-center gap-4 border-b pb-4"
             >
               <img
-                src={item.image}
+                src={item.selectedImage || item.image}
                 alt={item.name}
                 className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-md"
               />

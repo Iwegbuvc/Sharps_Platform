@@ -276,9 +276,10 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import PayStackButton from "./PayStackButton";
 import API from "../../api/api";
-import useCart from "../../hooks/useCart";
+import { useCart } from "../../context/cartContext";
 import { useAuth } from "../../context/AuthContext";
 import { useRef } from "react";
+import { toast } from "sonner";
 
 const CheckOut = () => {
   const navigate = useNavigate();
@@ -318,6 +319,9 @@ const CheckOut = () => {
       setCheckoutId(res.data.orderId);
       setPayAmount(res.data.amount);
     } catch (err) {
+      // Show backend error message if available
+      const message = err?.response?.data?.message || "Checkout failed";
+      toast.error(message);
       console.error(err);
       checkoutInProgress.current = false;
     } finally {
@@ -507,7 +511,7 @@ const CheckOut = () => {
             >
               <div className="flex">
                 <img
-                  src={item.product.images[0]?.url}
+                  src={item.selectedImage || item.product.images[0]?.url}
                   className="w-20 h-24 object-cover me-4"
                 />
                 <div>
