@@ -17,6 +17,11 @@ import OrderDetailsPage from "./pages/OrderDetailsPage";
 import MyOrdersPage from "./pages/MyOrdersPage";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import TermsAndConditions from "./pages/TermsAndConditions";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import RefundPolicy from "./pages/RefundPolicy";
+import ShippingPolicy from "./pages/ShippingPolicy";
+import FAQ from "./pages/FAQ";
 
 import AdminLayout from "./components/Admin/AdminLayout";
 import AdminHomePage from "./pages/AdminHomePage";
@@ -51,6 +56,11 @@ const App = () => {
                 />
                 <Route path="order/:id" element={<OrderDetailsPage />} />
                 <Route path="my-orders" element={<MyOrdersPage />} />
+                <Route path="terms-and-conditions" element={<TermsAndConditions />} />
+                <Route path="privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="refund-policy" element={<RefundPolicy />} />
+                <Route path="shipping-policy" element={<ShippingPolicy />} />
+                <Route path="faq" element={<FAQ />} />
               </Route>
 
               <Route

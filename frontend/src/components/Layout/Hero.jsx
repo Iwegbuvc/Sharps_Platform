@@ -112,9 +112,9 @@ const Hero = () => {
                     src={data.img}
                     alt={data.title}
                     className="
-    w-[100vw] h-[100vw]      
-    sm:w-80 sm:h-80       
-    md:w-96 md:h-96        
+    w-[100vw] h-[100vw]
+    sm:w-80 sm:h-80
+    md:w-96 md:h-96
     object-cover
     rounded-xl
     drop-shadow-xl
@@ -134,3 +134,47 @@ const Hero = () => {
 };
 
 export default Hero;
+
+// FOR VIDEO BACKGROUND (REVERT TO THIS IF VIDEO IS ADDED BACK IN)
+// import { Link } from "react-router-dom";
+
+// const Hero = () => {
+//   return (
+//     <section className="relative w-full min-h-[100svh] md:min-h-[83vh] overflow-hidden">
+//       {/* Background video */}
+//       <video
+//         className="absolute inset-0 w-full h-full object-cover"
+//         autoPlay
+//         loop
+//         muted
+//         playsInline
+//         preload="auto"
+//       >
+//         <source src="/videos/14474471_2160_3840_30fps.mp4" type="video/mp4" />
+//       </video>
+
+//       {/* Overlay */}
+//       <div className="absolute inset-0 bg-black/45" />
+
+//       {/* Foreground content */}
+//       <div className="relative z-10 flex min-h-[100svh] md:min-h-[83vh] items-center px-4 sm:px-8 md:px-12 py-16">
+//         <div className="max-w-2xl text-white">
+//           <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight">
+//             Discover Premium Products
+//           </h1>
+//           <p className="mt-4 text-sm sm:text-base text-white/90">
+//             Explore featured collections and shop quality products in one place.
+//           </p>
+//           <Link
+//             to="/products"
+//             className="mt-6 inline-block bg-gradient-to-r from-[var(--gold-from)] to-[var(--gold-to)] text-white px-6 py-3 rounded-lg font-semibold shadow-lg hover:scale-105 transition-transform duration-300"
+//           >
+//             Shop Now
+//           </Link>
+//         </div>
+//       </div>
+//     </section>
+//   );
+// };
+
+// export default Hero;

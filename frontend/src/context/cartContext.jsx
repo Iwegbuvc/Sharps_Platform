@@ -113,9 +113,9 @@ export const CartProvider = ({ children }) => {
       if (err?.response?.status === 401) {
         message = "You must be logged in to add items to your cart.";
       }
-      if (typeof toast !== 'undefined') {
+      if (typeof toast !== "undefined") {
         toast.error(message);
-      } else if (typeof window !== 'undefined' && window.toast) {
+      } else if (typeof window !== "undefined" && window.toast) {
         window.toast.error(message);
       } else {
         console.error(message);

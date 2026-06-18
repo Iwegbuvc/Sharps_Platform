@@ -1,4 +1,5 @@
 import Header from "../Common/Header";
+import Footer from "../Common/Footer";
 import { Outlet } from "react-router-dom";
 
 const UserLayout = () => {
@@ -10,8 +11,8 @@ const UserLayout = () => {
       {/* Main-Section */}
       <main className="flex-1 overflow-hidden">
         <Outlet />
-        {/* <Profile /> */}
       </main>
+      <Footer />
     </div>
   );
 };

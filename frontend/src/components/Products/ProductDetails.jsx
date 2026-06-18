@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import API from "../../api/api";
 import { useCart } from "../../context/cartContext";
+import InStockBadge from "../Common/InStockBadge";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -103,7 +104,14 @@ const ProductDetails = () => {
         {/* Product Info */}
         <div className="space-y-6 text-center lg:text-left">
           <h1 className="text-3xl font-extrabold uppercase">{product.name}</h1>
-          <p className="text-xl font-semibold">₦{product.price}</p>
+          <div className="flex flex-col gap-2">
+            <p className="text-xl font-semibold">₦{product.price}</p>
+            <InStockBadge
+              isInStock={
+                product.inStock ?? product.stock ?? product.countInStock ?? true
+              }
+            />
+          </div>
           <p className="text-sm opacity-80">{product.description}</p>
 
           {/* Sizes – render ONLY if product has sizes */}
