@@ -50,7 +50,7 @@ const Footer = () => {
           </h2>
           <div className="text-sm text-gray-300 space-y-3">
             <p>sharpscollection.online@gmail.com</p>
-            <p>08142853360</p>
+            <p>+2348142853360</p>
             <p>49 Rumuepirikom/Iwofe Rd Rumuopirikom Port Harcourt</p>
           </div>
         </div>
