@@ -11,12 +11,14 @@ import { useState } from "react";
 import { IoMdClose } from "react-icons/io";
 
 const navLinks = [
-  { name: "New Products", path: "/products?new=true" },
+  // { name: "New Products", path: "/products?new=true" },
+  { name: "New Products", path: "/products?isNew=true" },
   { name: "Men", path: "/products?gender=men" },
   { name: "Women", path: "/products?gender=women" },
+  { name: "Interiors", path: "/products?category=interiors" },
   { name: "Shoes", path: "/products?category=shoes" },
   { name: "Accessories", path: "/products?category=accessories" },
-  { name: "Artefact", path: "/products?category=artefact" },
+  { name: "Artifacts", path: "/products?category=artifacts" },
   { name: "My Account", path: "/profile" },
   { name: "My Orders", path: "/my-orders" },
 ];

@@ -397,6 +397,7 @@ const CATEGORIES = [
   { label: "Trousers", value: "trousers" },
   { label: "Shoes", value: "shoes" },
   { label: "Artifacts", value: "artifacts" },
+  { label: "Interiors", value: "interiors" },
 ];
 
 const GENDERS = [
