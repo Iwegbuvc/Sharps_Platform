@@ -6,31 +6,81 @@ import ScrollToTopButton from "../Common/ScrollToTopButton";
 const ProductsPage = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [pageSize] = useState(12);
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 12,
+    total: 0,
+    totalPages: 1,
+  });
   const [params] = useSearchParams();
 
-  // Get search query param
+  const queryString = params.toString();
   const searchQuery = params.get("q")?.toLowerCase() || "";
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        setLoading(true);
         const res = await API.get("/products/getProducts", {
-          params: Object.fromEntries(params),
+          params: {
+            ...Object.fromEntries(params.entries()),
+            search: searchQuery || undefined,
+            page,
+            limit: pageSize,
+          },
         });
-        setProducts(res.data.products);
+        setProducts(Array.isArray(res.data.products) ? res.data.products : []);
+        setPagination({
+          page: res.data.page || 1,
+          limit: res.data.limit || pageSize,
+          total: res.data.total || 0,
+          totalPages: res.data.totalPages || 1,
+        });
       } catch (err) {
         console.error(err);
+        setProducts([]);
       } finally {
         setLoading(false);
       }
     };
-    fetchProducts();
-  }, [params]);
 
-  // Filter products by search query if present
-  const filteredProducts = searchQuery
-    ? products.filter((p) => p.name.toLowerCase().includes(searchQuery))
-    : products;
+    setPage(1);
+    fetchProducts();
+  }, [queryString]);
+
+  useEffect(() => {
+    if (page === 1) return;
+
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const res = await API.get("/products/getProducts", {
+          params: {
+            ...Object.fromEntries(params.entries()),
+            search: searchQuery || undefined,
+            page,
+            limit: pageSize,
+          },
+        });
+        setProducts(Array.isArray(res.data.products) ? res.data.products : []);
+        setPagination({
+          page: res.data.page || 1,
+          limit: res.data.limit || pageSize,
+          total: res.data.total || 0,
+          totalPages: res.data.totalPages || 1,
+        });
+      } catch (err) {
+        console.error(err);
+        setProducts([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, [page, queryString]);
 
   if (loading) {
     return (
@@ -54,7 +104,7 @@ const ProductsPage = () => {
           mx-auto
         "
       >
-        {filteredProducts.map((p) => (
+        {products.map((p) => (
           <Link
             key={p._id}
             to={`/products/${p._id}`}
@@ -98,6 +148,30 @@ const ProductsPage = () => {
           </Link>
         ))}
       </div>
+
+      {pagination.totalPages > 1 && (
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-3 text-sm">
+          <button
+            type="button"
+            onClick={() => setPage((prev) => Math.max(1, prev - 1))}
+            disabled={page === 1 || loading}
+            className="rounded border border-gray-300 px-3 py-2 disabled:opacity-50"
+          >
+            Previous
+          </button>
+          <span>
+            Page {pagination.page} of {pagination.totalPages}
+          </span>
+          <button
+            type="button"
+            onClick={() => setPage((prev) => prev + 1)}
+            disabled={page >= pagination.totalPages || loading}
+            className="rounded border border-gray-300 px-3 py-2 disabled:opacity-50"
+          >
+            Next
+          </button>
+        </div>
+      )}
 
       {/* 🔝 Scroll to top */}
       <ScrollToTopButton />

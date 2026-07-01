@@ -993,19 +993,38 @@ const AdminProducts = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [formData, setFormData] = useState(emptyForm);
+  const [page, setPage] = useState(1);
+  const [pageSize] = useState(10);
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 10,
+    total: 0,
+    totalPages: 1,
+  });
   const [deleteConfirm, setDeleteConfirm] = useState({
     isOpen: false,
     productId: null,
     productName: "",
     isDeleting: false,
   });
-  const hasFetched = useRef(false);
 
   /* ================= FETCH ================= */
-  const fetchProducts = async () => {
+  const fetchProducts = async (currentPage = page) => {
     try {
-      const res = await API.get("/products/getProducts");
+      setLoading(true);
+      const res = await API.get("/products/getProducts", {
+        params: {
+          page: currentPage,
+          limit: pageSize,
+        },
+      });
       setProducts(Array.isArray(res.data.products) ? res.data.products : []);
+      setPagination({
+        page: res.data.page || 1,
+        limit: res.data.limit || pageSize,
+        total: res.data.total || 0,
+        totalPages: res.data.totalPages || 1,
+      });
     } catch (err) {
       console.error("Failed to fetch products:", err);
       setProducts([]);
@@ -1015,10 +1034,8 @@ const AdminProducts = () => {
   };
 
   useEffect(() => {
-    if (hasFetched.current) return;
-    hasFetched.current = true;
-    fetchProducts();
-  }, []);
+    fetchProducts(page);
+  }, [page]);
 
   /* ================= MODAL ================= */
   const openAddModal = () => {
@@ -1156,7 +1173,7 @@ const AdminProducts = () => {
       }
 
       setIsModalOpen(false);
-      fetchProducts();
+      fetchProducts(page);
     } catch (err) {
       console.error("Save Error:", err.response?.data || err.message);
       alert(err.response?.data?.message || "Failed to save product");
@@ -1213,6 +1230,35 @@ const AdminProducts = () => {
         >
           Add Product
         </button>
+      </div>
+
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4 text-sm text-gray-600">
+        <p>
+          Showing {products.length} of {pagination.total} products
+        </p>
+        {pagination.totalPages > 1 && (
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setPage((prev) => Math.max(1, prev - 1))}
+              disabled={page === 1 || loading}
+              className="px-3 py-1 border rounded disabled:opacity-50"
+            >
+              Previous
+            </button>
+            <span>
+              Page {pagination.page} of {pagination.totalPages}
+            </span>
+            <button
+              type="button"
+              onClick={() => setPage((prev) => prev + 1)}
+              disabled={page >= pagination.totalPages || loading}
+              className="px-3 py-1 border rounded disabled:opacity-50"
+            >
+              Next
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="bg-white rounded shadow overflow-x-auto w-full hidden md:block">
