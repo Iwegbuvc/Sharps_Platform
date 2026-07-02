@@ -67,13 +67,13 @@ const Hero = () => {
 
   return (
     /* FULL WIDTH + FULL HEIGHT BACKGROUND */
-    <section className="w-full h-full overflow-hidden bg-gradient-to-br from-gray-50 to-gray-200 flex items-center">
-      {/* CENTERED CONTENT – NO STRETCH */}
-      <div className="w-full h-full px-2.5 sm:px-4">
+    <section className="w-full min-h-screen overflow-hidden bg-gradient-to-br from-gray-50 to-gray-200 flex items-center justify-center pb-12">
+      {/* CENTERED CONTAINER WITH MAX WIDTH */}
+      <div className="w-full max-w-7xl px-2.5 sm:px-4">
         <Slider {...settings}>
           {sliderProducts.map((data) => (
             <div key={data.id}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 items-center h-full gap-2 sm:gap-4 pt-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 items-center gap-2 sm:gap-4 pt-8">
                 {/* TEXT */}
                 <div className="flex flex-col gap-4 text-center sm:text-left order-2 sm:order-1 sm:pl-4 md:pl-6 sm:ml-6 md:ml-12">
                   <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-gray-900">
